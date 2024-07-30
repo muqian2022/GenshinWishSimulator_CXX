@@ -56,7 +56,7 @@ public:
     }
 
     void about() {
-        cout << "\n\n// 概率参考：https://www.bilibili.com/read/cv12616453/\n作者：OneBST";
+        cout << "\n\n    概率参考：https://www.bilibili.com/read/cv12616453/\n    作者：OneBST";
     }
 };
 
@@ -67,6 +67,14 @@ private:
     vector<string> _5star_std;
     vector<string> _4star_std;
     vector<string> _3star_std;
+
+    string gold_color(string s) {
+        return "\033[33m" + s + "\033[0m";
+    }
+
+    string purple_color(string s) {
+        return "\033[35m" + s + "\033[0m";
+    }
 
 public:
     BannerItems(json data) {
@@ -81,16 +89,16 @@ public:
     // "\033[35mMagenta Text\033[0m"
 
     string get_a_5star_up() {
-        return "\033[33m" + *Random::get(_5star_up) + "\033[0m";
+        return gold_color(*Random::get(_5star_up));
     }
     string get_a_4star_up() {
-        return "\033[35m" + *Random::get(_4star_up) + "\033[0m";
+        return purple_color(*Random::get(_4star_up));
     }
     string get_a_5star_std() {
-        return "\033[33m" + *Random::get(_5star_std) + "\033[0m";
+        return gold_color(*Random::get(_5star_std));
     }
     string get_a_4star_std() {
-        return "\033[35m" + *Random::get(_4star_std) + "\033[0m";
+        return purple_color(*Random::get(_4star_std));
     }
     string get_a_3star_std() { return *Random::get(_3star_std); }
 
@@ -107,8 +115,8 @@ private:
     bool is_5star_up{false}, is_4star_up{false};
     int to_5star{};
     int to_4star{};
-    const int _5star_max = 90; // 没用到
-    const int _4star_max = 10;
+    // const int _5star_max = 90;  没用到
+    // const int _4star_max = 10;
 
     BannerItems bi;
     Probability pr;
@@ -138,7 +146,7 @@ public:
             }
             is_4star_up = Random::get<bool>(0.5);
             is_4star_up = !is_4star_up;
-            return is_4star_up ? bi.get_a_4star_up() : bi.get_a_4star_std();
+            return !is_4star_up ? bi.get_a_4star_up() : bi.get_a_4star_std();
         } else {
             return bi.get_a_3star_std();
         }
@@ -184,7 +192,7 @@ int main() {
         char x = _getch();
         if (x == '1') {
             times--;
-            cout << "Wish Once: " << sw.wish_once() << '\n';
+            cout << "Wish     Once: " << sw.wish_once() << '\n';
         }
         if (x == '2') { // 按理来说，如果不满十抽 不可以进行的
             times -= 10;
